@@ -37,29 +37,25 @@ module RSpec
       end
 
       def example_failed(notification)
-        @output.puts "    <testCase name=\"#{single_quotes(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\">"
-        @output.puts "      <failure message=\"#{notification.exception}\" stacktrace=\"#{strip_color_code(notification.fully_formatted(@last_failure_index += 1))}\"/>"
-        @output.puts "    </testcase>"
+        @output.puts "    <testCase name=\"#{clean_string(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\">"
+        @output.puts "      <failure message=\"#{notification.exception}\" stacktrace=\"#{notification.example.location}\"/>"
+        @output.puts "    </testCase>"
       end
 
       def example_passed(notification)
-        @output.puts "    <testCase name=\"#{single_quotes(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\"/>"
+        @output.puts "    <testCase name=\"#{clean_string(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\"/>"
       end
 
       def example_pending(notification)
-        @output.puts "    <testCase name=\"#{notification.example.description}\" duration=\"#{notification.example.execution_result.run_time}\">"
-        @output.puts "      <skipped message=\"#{notification.example.execution_result.pending_message}\"/>"
-        @output.puts "    </testcase>"
+        @output.puts "    <testCase name=\"#{clean_string(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\">"
+        @output.puts "      <skipped message=\"#{clean_string(notification.example.execution_result.pending_message)}\"/>"
+        @output.puts "    </testCase>"
       end
 
-      def strip_color_code(s)
+      def clean_string(s)
         s.gsub(/\e\[\d;*\d*m/,'')
-      end
-
-      def single_quotes(s)
         s.gsub(/"/,"'")
       end
-
     end
   end
 end
