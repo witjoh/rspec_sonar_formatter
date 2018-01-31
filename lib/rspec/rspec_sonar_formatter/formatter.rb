@@ -38,10 +38,7 @@ module RSpec
 
       def example_failed(notification)
         @output.puts "    <testCase name=\"#{single_quotes(notification.example.description)}\" duration=\"#{notification.example.execution_result.run_time}\">"
-        @output.puts "      <failure>"
-        @output.puts "        <message=\"#{notification.exception}\"/>"
-        @output.puts "        <stacktrace=\"#{strip_color_code(notification.fully_formatted(@last_failure_index += 1))}\"/>"
-        @output.puts "      </failure>"
+        @output.puts "      <failure message=\"#{notification.exception}\" stacktrace=\"#{strip_color_code(notification.fully_formatted(@last_failure_index += 1))}\"/>"
         @output.puts "    </testcase>"
       end
 
@@ -58,7 +55,7 @@ module RSpec
       def strip_color_code(s)
         s.gsub(/\e\[\d;*\d*m/,'')
       end
-      
+
       def single_quotes(s)
         s.gsub(/"/,"'")
       end
